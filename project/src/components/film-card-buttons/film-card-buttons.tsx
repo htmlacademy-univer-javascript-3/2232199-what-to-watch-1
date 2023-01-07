@@ -4,7 +4,6 @@ import React from 'react';
 import {Film} from '../../types/film';
 import {FilmStatus} from '../../types/film-status';
 import {changeFilmStatusToView} from '../../store/api-actions';
-import {setFavoriteCount} from '../../store/main-data/main-data';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {getFavoriteCount} from '../../store/main-data/selectors';
 
@@ -24,12 +23,6 @@ function FilmCardButtons({film, authStatus}: FilmCardButtonsProps): JSX.Element{
     };
 
     dispatch(changeFilmStatusToView(filmStatus));
-
-    if (film?.isFavorite) {
-      dispatch(setFavoriteCount(favoriteCount - 1));
-    } else {
-      dispatch(setFavoriteCount(favoriteCount + 1));
-    }
   };
 
   return(
@@ -43,20 +36,26 @@ function FilmCardButtons({film, authStatus}: FilmCardButtonsProps): JSX.Element{
         </svg>
         <span>Play</span>
       </Link>
-      <Link
-        className='btn btn--list film-card__button'
-        to={'/mylist'}
-        onClick={onAddFavoriteClick}
-      >
-        {
-          film?.isFavorite ? <span>✓</span> :
-            <svg viewBox="0 0 19 20" width="19" height="20">
-              <use xlinkHref="#add"></use>
-            </svg>
-        }
-        <span>My list</span>
-        <span className="film-card__count">{favoriteCount}</span>
-      </Link>
+      {
+        authStatus === AuthorizationStatus.Auth &&
+        <button
+          className="btn btn--list film-card__button"
+          type="button"
+          onClick={onAddFavoriteClick}
+        >
+          {
+            film?.isFavorite ?
+              <svg viewBox="0 0 19 20" width="19" height="20">
+                <use xlinkHref="#in-list"></use>
+              </svg> :
+              <svg viewBox="0 0 19 20" width="19" height="20">
+                <use xlinkHref="#add"></use>
+              </svg>
+          }
+          <span>My list</span>
+          <span className="film-card__count">{favoriteCount}</span>
+        </button>
+      }
       { authStatus === AuthorizationStatus.Auth &&
         <Link to={'review'} className="btn film-card__button" type='button'>Add review</Link>}
     </div>

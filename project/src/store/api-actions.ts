@@ -5,7 +5,7 @@ import {Film} from '../types/film';
 import {APIRoute} from '../const';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
-import {dropToken} from '../services/token';
+import {dropToken, saveToken} from '../services/token';
 import {Comment} from '../types/comment';
 import {UserComment} from '../types/user-comment';
 import {useNavigate} from 'react-router-dom';
@@ -35,7 +35,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const loginAction = createAsyncThunk<{token: string, avatarUrl: string, userId: number}, AuthData, {
+export const loginAction = createAsyncThunk<{avatarUrl: string, userId: number}, AuthData, {
   dispatch: AppDispatch,
   state: State,
   extra: AxiosInstance
@@ -43,7 +43,8 @@ export const loginAction = createAsyncThunk<{token: string, avatarUrl: string, u
   'user/login',
   async ({email, password}, {extra: api}) => {
     const {data: {token, avatarUrl, id}} = await api.post<UserData>(APIRoute.Login, {email, password});
-    return {token: token, avatarUrl: avatarUrl, userId: id};
+    saveToken(token);
+    return {avatarUrl: avatarUrl, userId: id};
   },
 );
 
@@ -116,19 +117,6 @@ export const changeFilmStatusToView = createAsyncThunk<Film, FilmStatus, {
   extra: AxiosInstance
 }>(
   'data/changeFilmStatusToView',
-  async ({filmId: id, status: isFavorite}, { dispatch, extra: api}) => {
-    const {data} = await api.post<Film>(`${APIRoute.Favorite}/${id}/${isFavorite}`);
-
-    return data;
-  },
-);
-
-export const changePromoStatusToView = createAsyncThunk<Film, FilmStatus, {
-  dispatch: AppDispatch,
-  state: State,
-  extra: AxiosInstance
-}>(
-  'data/changePromoStatusToView',
   async ({filmId: id, status: isFavorite}, { dispatch, extra: api}) => {
     const {data} = await api.post<Film>(`${APIRoute.Favorite}/${id}/${isFavorite}`);
 

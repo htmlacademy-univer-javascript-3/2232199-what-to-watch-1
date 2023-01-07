@@ -17,7 +17,6 @@ import {AuthorizationStatus} from '../../const';
 import UserBlock from '../../components/user-block/user-block';
 import {getFilm, getIsFilmFoundStatus, getIsFilmLoadingStatus, getSimilar} from '../../store/film-data/selectors';
 import {getAuthorizationStatus} from '../../store/user-process/selectors';
-import {setIsDataLoaded} from '../../store/main-data/main-data';
 import {changeFilmTab} from '../../store/film-data/film-data';
 import {FilmTabs} from '../../types/film-tabs';
 import FilmCardButtons from '../../components/film-card-buttons/film-card-buttons';
@@ -27,13 +26,10 @@ function MoviePage(): JSX.Element{
   const id = Number(useParams().id);
   const film = useAppSelector(getFilm);
   const authStatus = useAppSelector(getAuthorizationStatus);
-  const loadStatus = useAppSelector(getIsFilmLoadingStatus);
-  const isFilmFoundStatus = useAppSelector(getIsFilmFoundStatus);
   const dispatch = useAppDispatch();
   const similar = useAppSelector(getSimilar);
 
   useEffect(() => {
-    dispatch(setIsDataLoaded(true));
     dispatch(changeFilmTab(FilmTabs.Overview));
     dispatch(fetchFilmByID(id.toString()));
     dispatch(fetchCommentsByID(id.toString()));
@@ -41,11 +37,12 @@ function MoviePage(): JSX.Element{
     if (authStatus === AuthorizationStatus.Auth) {
       dispatch(fetchFavoriteFilmsAction());
     }
-
-    dispatch(setIsDataLoaded(false));
   }, [id, dispatch, authStatus]);
 
-  if (loadStatus) {
+  const isFilmLoadingStatus = useAppSelector(getIsFilmLoadingStatus);
+  const isFilmFoundStatus = useAppSelector(getIsFilmFoundStatus);
+
+  if (isFilmLoadingStatus) {
     return(<Loading />);
   }
 

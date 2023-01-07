@@ -8,6 +8,7 @@ import {loginAction} from '../../store/api-actions';
 import {getAuthorizationStatus} from '../../store/user-process/selectors';
 import {Navigate} from 'react-router-dom';
 import {AuthorizationStatus} from '../../const';
+import {resetMainScreen} from '../../store/main-data/main-data';
 
 function SignIn(): JSX.Element{
   const authStatus = useAppSelector(getAuthorizationStatus);
@@ -18,6 +19,7 @@ function SignIn(): JSX.Element{
   const dispatch = useAppDispatch();
 
   const onSubmit = (authData: AuthData) => {
+    dispatch(resetMainScreen());
     dispatch(loginAction(authData));
   };
 
@@ -95,10 +97,11 @@ function SignIn(): JSX.Element{
               className="sign-in__btn"
               type="submit"
               onClick={(evt) => {
+                evt.preventDefault();
                 if (emailRef.current !== null
                   && passwordRef.current !== null
-                  && checkEmail(emailRef.current.value)
-                  && checkPassword(passwordRef.current.value)) {
+                  && checkEmail(emailRef.current?.value)
+                  && checkPassword(passwordRef.current?.value)) {
                   onSubmit({
                     email: emailRef.current.value,
                     password: passwordRef.current.value,

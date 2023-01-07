@@ -13,8 +13,8 @@ function Catalog({ films }: CatalogProps): JSX.Element{
           key={film.id}
           id={film.id}
           title={film.name}
-          posterUrl={film.posterImage}
-          videoUrl={film.videoLink}
+          previewImage={film.previewImage}
+          videoUrl={film.previewVideoLink}
         />))}
     </div>);
 }

@@ -43,7 +43,7 @@ function MyList(): JSX.Element{
             key={film.id}
             id={film.id}
             title={film.name}
-            posterUrl={film.previewImage}
+            previewImage={film.previewImage}
             videoUrl={film.videoLink}
           />))}
       </section>

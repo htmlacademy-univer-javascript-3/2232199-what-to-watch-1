@@ -2,7 +2,6 @@ import {createSlice} from '@reduxjs/toolkit';
 import {NameSpace, AuthorizationStatus} from '../../const';
 import {UserProcess} from '../../types/state';
 import {checkAuthAction, loginAction, logoutAction} from '../api-actions';
-import {saveToken} from '../../services/token';
 import {getAvatarURL, saveAvatarURL} from '../../services/avatar';
 
 const initialState: UserProcess = {
@@ -24,7 +23,6 @@ export const userProcess = createSlice({
         state.authorizationStatus = AuthorizationStatus.NoAuth;
       })
       .addCase(loginAction.fulfilled, (state, action) => {
-        saveToken(action.payload.token);
         state.avatar = action.payload.avatarUrl;
         saveAvatarURL(action.payload.avatarUrl);
         state.userId = action.payload.userId;

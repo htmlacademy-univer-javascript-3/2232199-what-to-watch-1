@@ -7,11 +7,11 @@ import {resetMainScreen} from '../../store/main-data/main-data';
 type SmallFilmCardProps ={
   id: number;
   title: string;
-  posterUrl: string;
   videoUrl: string;
+  previewImage: string;
 };
 
-function SmallFilmCard({id, title, posterUrl, videoUrl}: SmallFilmCardProps): JSX.Element{
+function SmallFilmCard({id, title, videoUrl, previewImage}: SmallFilmCardProps): JSX.Element{
   const dispatch = useAppDispatch();
   const [isPointed, setIsPointed] = useState(false);
 
@@ -24,8 +24,8 @@ function SmallFilmCard({id, title, posterUrl, videoUrl}: SmallFilmCardProps): JS
       <div className='small-film-card__image'>
         {
           isPointed
-            ? <PreviewPlayer image={posterUrl} previewVideo={videoUrl}/>
-            : <img src={posterUrl} alt={title} width='280' height='175'/>
+            ? <PreviewPlayer image={previewImage} previewVideo={videoUrl}/>
+            : <img src={previewImage} alt={title} width='280' height='175'/>
         }
       </div>
       <h3 className='small-film-card__title'>

@@ -69,8 +69,8 @@ function Main(): JSX.Element{
         <section className='catalog'>
           <h2 className='catalog__title visually-hidden'>Catalog</h2>
           <GenresFilter/>
-          <Catalog films={films}/>
-          <ShowMore isAllCardsLoaded={cardCount !== films.length}/>
+          <Catalog films={films.slice(0, cardCount)}/>
+          {cardCount !== films.length && <ShowMore/>}
         </section>
 
         <Footer/>

@@ -38,7 +38,14 @@ function App(): JSX.Element {
           />
           <Route path='films/:id' element={<MoviePage/>}/>
           <Route path='player/:id' element={<Player/>}/>
-          <Route path='films/:id/review' element={<AddReview/>}/>
+          <Route
+            path='films/:id/review'
+            element={
+              <PrivateRoute authorizationStatus={authorizationStatus}>
+                <AddReview/>
+              </PrivateRoute>
+            }
+          />
           <Route path='*' element={<NotFound/>}/>
         </Route>
       </Routes>

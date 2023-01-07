@@ -14,7 +14,7 @@ const initialState: FilmData = {
   similar: [],
   comments: [],
   currentFilmTab: FilmTabs.Overview,
-  isFilmLoadingStatus: null,
+  isFilmLoadingStatus: true,
   isFilmFoundStatus: null
 };
 
@@ -24,9 +24,6 @@ export const filmData = createSlice({
   reducers: {
     changeFilmTab: (state, action) => {
       state.currentFilmTab = action.payload;
-    },
-    resetFilmTab: (state) => {
-      state.currentFilmTab = FilmTabs.Overview;
     }
   },
   extraReducers(builder) {
@@ -58,5 +55,4 @@ export const filmData = createSlice({
 
 export const {
   changeFilmTab,
-  resetFilmTab
 } = filmData.actions;
